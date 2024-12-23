@@ -1,7 +1,7 @@
-Feature: Create Client
+Feature: Create New Client for Simple Grocery Store Collection
 
   Scenario: Register a new client
     Given I have request payload
-    When I POST the request to create the client with random string
+    When a POST call is made to the "https://simple-grocery-store-api.glitch.me/api-clients"
+    And response code should be 201
     Then capture the response payload
-    And Will validate status code
