@@ -8,7 +8,6 @@ public class GetCartWithCartId {
 
     @Then("print the response payload")
     public void printTheResponsePayload() {
-        String actualResponsePayload = CommonValidations.res.getBody().asString();
-        out.println(actualResponsePayload);
+        CommonValidations.res.body().prettyPrint();
     }
 }

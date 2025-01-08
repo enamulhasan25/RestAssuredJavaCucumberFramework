@@ -8,6 +8,6 @@ public class GetAllProductsList {
 
     @Then("print the list of products from the response")
     public void printListOfAllProducts() {
-        out.println(CommonValidations.res.getBody().asString());
+        out.println(CommonValidations.res.body().prettyPrint());
     }
 }

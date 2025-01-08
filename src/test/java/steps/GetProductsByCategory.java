@@ -14,13 +14,12 @@ public class GetProductsByCategory {
 
     @Then("all products should have the category {string}")
     public void all_products_should_have_the_category(String expectedCategory) {
-        JsonPath jsonPath = CommonValidations.res.jsonPath();
+        JsonPath jsonPath = JsonPath.given(CommonValidations.res.body().prettyPrint());
         List<Map<String, Object>> products = jsonPath.getList("$");
-        out.println("All products are: "+ products);
 
         boolean allMatch = products.stream()
                 .allMatch(product -> product.get("category").equals(expectedCategory));
-        out.println("All categories of coffee are: "+ allMatch);
+        out.println("All product categories are coffee: " + allMatch);
         Assert.assertTrue("Not all products have the category: " + expectedCategory, allMatch);
     }
 }

@@ -2,7 +2,6 @@ package steps;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.restassured.response.Response;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 

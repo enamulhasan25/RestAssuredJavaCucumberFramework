@@ -1,7 +1,7 @@
 Feature: Get cart items list with cartId for the Simple Grocery Store Collection
 
   Scenario: Get cart items
-    When a GET call is made to the single cart endpoint "https://simple-grocery-store-api.glitch.me/carts/{cartId}/items" with cartId "x4rl_q8T_pr0gUyozUjXc"
+    When a GET call is made to the single cart endpoint "https://simple-grocery-store-api.glitch.me/carts/{cartId}/items" with cartId "-kB1mSotZHPDoAU3dxRlw"
     And response code should be 200
     Then print the response payload
 

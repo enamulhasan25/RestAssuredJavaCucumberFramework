@@ -30,7 +30,7 @@ public class AddAnItemToCart {
 
     @Then("capture the itemId from the response")
     public void captureItemIdFromResponse() {
-        out.println("Response Payload: " + CommonValidations.res.getBody().asString());
+        CommonValidations.res.body().prettyPrint();
         actualItemIdFromResponse = CommonValidations.res.jsonPath().getString("itemId").trim();
         out.println("Captured ItemId: " + actualItemIdFromResponse);
     }

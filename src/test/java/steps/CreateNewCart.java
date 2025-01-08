@@ -6,19 +6,21 @@ import static java.lang.System.out;
 
 public class CreateNewCart {
 
-    private String actualCartIdFromResponse;
+    // Instance variable
+    private String newlyCreatedCartId;
 
     public String getActualCartIdFromResponse() {
-        return actualCartIdFromResponse;
+        return newlyCreatedCartId;
     }
 
     public void setActualCartIdFromResponse(String actualCartIdFromResponse) {
-        this.actualCartIdFromResponse = actualCartIdFromResponse;
+        this.newlyCreatedCartId = actualCartIdFromResponse;
     }
 
     @Then("capture the cartId from the response")
     public void createNewCart() {
-        actualCartIdFromResponse = CommonValidations.res.jsonPath().getString("cartId").trim();
-        out.println("Newly created cart id is : " + actualCartIdFromResponse);
+        CommonValidations.res.body().prettyPrint();
+        newlyCreatedCartId = CommonValidations.res.jsonPath().getString("cartId").trim();
+        out.println("Newly created cart id is : " + newlyCreatedCartId);
     }
 }

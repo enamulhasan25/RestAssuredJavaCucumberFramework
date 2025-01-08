@@ -8,6 +8,7 @@ import org.junit.Assert;
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
+import static java.lang.System.out;
 
 public class CommonValidations {
 
@@ -31,8 +32,19 @@ public class CommonValidations {
                 .get(endpoint);
     }
 
+//    @When("a GET call is made to the single cart endpoint {string} with cartId {string}")
+//    public void aGetCallMadeToTheCartEndpoint(String endpoint, String cartId) {
+//        CommonValidations.res = given()
+//                .pathParam("cartId", cartId)
+//                .get(endpoint);
+//    }
+
+
     @When("a GET call is made to the single cart endpoint {string} with cartId {string}")
     public void aGetCallMadeToTheCartEndpoint(String endpoint, String cartId) {
+        CreateNewCart cr = new CreateNewCart();
+        cr.setActualCartIdFromResponse(""+cartId);
+        out.println("This is the Newly Created CartId = "+cr.getActualCartIdFromResponse());
         CommonValidations.res = given()
                 .pathParam("cartId", cartId)
                 .get(endpoint);
