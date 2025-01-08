@@ -63,7 +63,7 @@ public class RegisterClient {
     @And("capture the response payload")
     public void capturingResponsePayload() {
         String accessTokenFromResponsePayload = CommonValidations.res.jsonPath().getString("accessToken");
-        out.println(CommonValidations.res.getBody().asString());
+        CommonValidations.res.body().prettyPrint();
         out.println("Access Token From Response payload is = " + accessTokenFromResponsePayload);
     }
 }
