@@ -13,6 +13,9 @@ import static java.lang.System.out;
 
 public class AddAnItemToCart {
 
+    // Accessing Singleton instance from the common Validations Class
+    CommonValidations cm = CommonValidations.getInstance();
+
     private String actualItemIdFromResponse;
 
     public final String jsonFilePath = "src/test/resources/requestPayloads/addItemToCart.json";
@@ -30,8 +33,8 @@ public class AddAnItemToCart {
 
     @Then("capture the itemId from the response")
     public void captureItemIdFromResponse() {
-        CommonValidations.res.body().prettyPrint();
-        actualItemIdFromResponse = CommonValidations.res.jsonPath().getString("itemId").trim();
+        cm.getRes().body().prettyPrint();
+        actualItemIdFromResponse = cm.getRes().jsonPath().getString("itemId").trim();
         out.println("Captured ItemId: " + actualItemIdFromResponse);
     }
 }

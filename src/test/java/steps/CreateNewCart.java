@@ -6,6 +6,9 @@ import static java.lang.System.out;
 
 public class CreateNewCart {
 
+    // Accessing Singleton instance from the common Validations Class
+    CommonValidations cm = CommonValidations.getInstance();
+
     // Instance variable
     private String newlyCreatedCartId;
 
@@ -19,8 +22,8 @@ public class CreateNewCart {
 
     @Then("capture the cartId from the response")
     public void createNewCart() {
-        CommonValidations.res.body().prettyPrint();
-        newlyCreatedCartId = CommonValidations.res.jsonPath().getString("cartId").trim();
+        cm.getRes().body().prettyPrint();
+        newlyCreatedCartId = cm.getRes().jsonPath().getString("cartId").trim();
         out.println("Newly created cart id is : " + newlyCreatedCartId);
     }
 }

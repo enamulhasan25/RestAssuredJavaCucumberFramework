@@ -6,8 +6,11 @@ import static java.lang.System.out;
 
 public class GetCartWithCartId {
 
+    // Accessing Singleton instance from the common Validations Class
+    CommonValidations cm = CommonValidations.getInstance();
+
     @Then("print the response payload")
     public void printTheResponsePayload() {
-        CommonValidations.res.body().prettyPrint();
+        cm.getRes().body().prettyPrint();
     }
 }

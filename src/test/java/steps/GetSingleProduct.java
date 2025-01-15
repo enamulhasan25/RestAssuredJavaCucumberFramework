@@ -7,12 +7,15 @@ import static java.lang.System.out;
 
 public class GetSingleProduct {
 
+    // Accessing Singleton instance from the common Validations Class
+    CommonValidations cm = CommonValidations.getInstance();
+
     @Then("productId {string} should display in the response payload")
     public void productIdShouldDisplayInTheResponsePayload(String expectedProductId) {
-        String actualResponsePayload = CommonValidations.res.body().prettyPrint(); // res is a shared variable and accessed directly from the other class object
+        cm.getRes().body().prettyPrint();
 
         // Fetch productId from the response and compare
-        String actualProductId = CommonValidations.res.jsonPath().getString("id");
+        String actualProductId = cm.getRes().jsonPath().getString("id");
         Assert.assertEquals("Product ID does not match", expectedProductId, actualProductId);
     }
 }
