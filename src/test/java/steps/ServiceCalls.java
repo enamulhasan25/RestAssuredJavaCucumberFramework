@@ -10,40 +10,40 @@ import java.io.IOException;
 import static io.restassured.RestAssured.given;
 import static java.lang.System.out;
 
-public class CommonValidations {
+public class ServiceCalls {
 
-    // Single ton instance
-    private static final CommonValidations instance = new CommonValidations();
-
-    // instance variable
+    // Singleton instance
+    private static ServiceCalls instance;
     private Response res;
 
-    // Getter and Setter for the above instance variable
-    public void setResponse(Response res) {
-        this.res = res;
-    }
-
-    public Response getRes() {
-        return res;
-    }
-
-    // Default constructor
-    public CommonValidations() {
+    public ServiceCalls() {
     }
 
     // Static method to provide access to the single instance
-    public static CommonValidations getInstance() {
+    public static ServiceCalls getInstance() {
+        if (instance == null) {
+            instance = new ServiceCalls();
+        }
         return instance;
+    }
+
+    // Getter and Setter for the response variable
+    public Response getResponse() {
+        return res;
+    }
+
+    public void setResponse(Response response) {
+        this.res = response;
     }
 
     // GET Service Call
     @When("a GET call is made to the {string}")
     public void aGETCallMadeToThe(String endpoint) {
-        res = given()
-                .get(endpoint);
+        res = given().get(endpoint);
         getInstance().setResponse(res);
     }
 
+    // GET call for the single product search
     @When("a GET call is made to the single product endpoint {string} with productId {string}")
     public void aGetCallMadeToTheSingleProductEndpoint(String endpoint, String productId) {
         res = given()
@@ -52,53 +52,61 @@ public class CommonValidations {
         getInstance().setResponse(res);
     }
 
+    // GET call for retrieving the newly created cart
+    @When("a GET call is made to the newly created cartId {string}")
+    public void aGetCallMadeToTheCartEndpoint(String endpoint) {
+        if (CreateNewCart.newlyCreatedCartId == null || CreateNewCart.newlyCreatedCartId.isEmpty()) {
+            out.println("Error: Cart ID is null or empty. Please check the response of cart creation.");
+            return;
+        }
 
-    @When("a GET call is made to the single cart endpoint {string} with cartId {string}")
-    public void aGetCallMadeToTheCartEndpoint(String endpoint, String cartId) {
-        CreateNewCart cr = new CreateNewCart();
-        cr.setActualCartIdFromResponse("" + cartId);
-        out.println("This is the Newly Created CartId = " + cr.getActualCartIdFromResponse());
+        String finalEndpoint = endpoint.replace("{cartId}", CreateNewCart.newlyCreatedCartId);
+        out.println("Final endpoint: " + finalEndpoint);
+
         res = given()
-                .pathParam("cartId", cartId)
-                .get(endpoint);
+                .pathParam("cartId", CreateNewCart.newlyCreatedCartId)
+                .get(finalEndpoint);
         getInstance().setResponse(res);
     }
 
-    // For POST Service call for Adding an item into cart
+    // POST call for adding an item into cart
     @When("a POST call is made to the add cart endpoint {string} with cartId {string}")
     public void aPOSTCallMadeToTheAddCartEndpoint(String endpoint, String cartId) throws IOException {
         AddAnItemToCart add = new AddAnItemToCart();
         String resolvedEndpoint = endpoint.replace("{cartId}", cartId);
-        res = given().contentType("application/json")
+
+        res = given()
+                .contentType("application/json")
                 .body(add.getProductIdFromRequestPayloadTemplate().toString())
                 .when()
                 .post(resolvedEndpoint);
+
         getInstance().setResponse(res);
     }
 
-    // For POST Service call for RegisterClientId
+    // POST call for registering a client
     @When("a POST call is made to the {string}")
     public void aPostCallIsMadeToTheRegister(String endpoint) {
-        res = given().contentType("application/json")
+        res = given()
+                .contentType("application/json")
                 .body(RegisterClient.getCreateAPIClientPayload())
                 .when()
                 .post(endpoint);
-        // Setting the response in the Singleton instance
+
         getInstance().setResponse(res);
     }
 
-    //POST call without body
-    @When("a POST call without is made to the {string}")
+    // POST call without body for creating a cart
+    @When("a POST call without body is made to the {string}")
     public void aPostCallWithoutBodyIsMadeToThe(String endpoint) {
-        res = given()
-                .when()
-                .post(endpoint);
+        res = given().when().post(endpoint);
         getInstance().setResponse(res);
     }
 
     // Validating the response code
     @And("response code should be {int}")
     public void responseCodeShouldBe(int expectedCode) {
-        Assert.assertEquals(expectedCode, res.getStatusCode());
+        Assert.assertEquals("Response code mismatch", expectedCode, res.getStatusCode());
+        getInstance().setResponse(res);
     }
 }

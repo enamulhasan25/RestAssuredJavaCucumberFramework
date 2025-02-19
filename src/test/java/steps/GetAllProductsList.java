@@ -7,10 +7,10 @@ import static java.lang.System.out;
 public class GetAllProductsList {
 
     // Accessing Singleton instance from the common Validations Class
-    CommonValidations cm = CommonValidations.getInstance();
+    ServiceCalls cm = ServiceCalls.getInstance();
 
     @Then("print the list of products from the response")
     public void printListOfAllProducts() {
-        out.println(cm.getRes().body().prettyPrint());
+        out.println(cm.getResponse().body().prettyPrint());
     }
 }

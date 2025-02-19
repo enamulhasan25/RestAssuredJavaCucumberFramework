@@ -1,29 +1,27 @@
 package steps;
 
 import io.cucumber.java.en.Then;
+import io.restassured.response.Response;
 
 import static java.lang.System.out;
 
 public class CreateNewCart {
 
-    // Accessing Singleton instance from the common Validations Class
-    CommonValidations cm = CommonValidations.getInstance();
+    // Accessing a singleton instance
+    ServiceCalls sc = ServiceCalls.getInstance();
+    public static String newlyCreatedCartId = "";
 
-    // Instance variable
-    private String newlyCreatedCartId;
-
-    public String getActualCartIdFromResponse() {
-        return newlyCreatedCartId;
-    }
-
-    public void setActualCartIdFromResponse(String actualCartIdFromResponse) {
-        this.newlyCreatedCartId = actualCartIdFromResponse;
-    }
-
-    @Then("capture the cartId from the response")
-    public void createNewCart() {
-        cm.getRes().body().prettyPrint();
-        newlyCreatedCartId = cm.getRes().jsonPath().getString("cartId").trim();
-        out.println("Newly created cart id is : " + newlyCreatedCartId);
+    @Then("capture the newly created cartId from the response")
+    public void captureNewlyCreatedCart() {
+        Response currentResponse = sc.getResponse();
+        if (currentResponse != null) {
+            currentResponse.body().prettyPrint();
+            // Extract the cartId from the response
+            newlyCreatedCartId = currentResponse.body().jsonPath().getString("cartId").trim();
+            out.println("Newly created cart id is: " + newlyCreatedCartId);
+            // sca.aGetCallMadeToTheCartEndpoint(newlyCreatedCartId);
+        } else {
+            out.println("Response is null. Please check again.");
+        }
     }
 }
